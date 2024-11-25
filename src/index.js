@@ -1,7 +1,18 @@
-import dotenv from "dotenv";
+import express from "express";
+import { PORT } from "./secrets.js";
+import rootRouter from "./routes/index.js";
 
-dotenv.config({ path: ".env" });
+const app = express();
 
-export const JWT_SECRET = process.env.JWT_SECRET;
-export const PORT = process.env.PORT;
-export const DATABASE_URL = process.env.DATABASE_URL;
+app.use(express.json());
+
+app.use("/api/v1", rootRouter);
+
+app.use("/", (req, res) => {
+  res.send("Hello From Temp File Upload");
+});
+
+app.listen(PORT, () => {
+  console.log("Temp File Upload App Working");
+  console.log(`Express app is running at http://localhost:${PORT}`);
+});
