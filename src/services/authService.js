@@ -1,6 +1,8 @@
 import { USER_ALREADY_EXISTS } from "../utils/constant.js";
 import { findUserByEmail, createUser } from "../models/user.js";
 import bcrypt from "bcrypt";
+import { StatusCodes } from "http-status-codes";
+
 class AuthService {
   async register(input) {
     const { name, email, password } = input;
@@ -9,7 +11,9 @@ class AuthService {
     const existingUser = await findUserByEmail(email);
 
     if (existingUser) {
-      throw new Error(USER_ALREADY_EXISTS);
+      const error = new Error(USER_ALREADY_EXISTS);
+      error.status = StatusCodes.BAD_REQUEST;
+      throw error;
     }
 
     // Hash the password

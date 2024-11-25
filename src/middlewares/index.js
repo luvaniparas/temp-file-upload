@@ -4,6 +4,8 @@ import morganMiddleware from "./morgan.js";
 import cookieParser from "cookie-parser";
 import validateToken from "./auth.js";
 import logger from "../utils/logger.js";
+import errorHandler from "./errorHandler.js";
+import rootRouter from "../routes/index.js";
 
 const applyMiddleware = (app) => {
   app.use(bodyParser.json());
@@ -14,6 +16,8 @@ const applyMiddleware = (app) => {
     req.logger = logger;
     next();
   });
+
+  app.use("/api/v1", rootRouter);
 
   // Apply token validation middleware to all routes except authentication
   app.use((req, res, next) => {
@@ -30,6 +34,8 @@ const applyMiddleware = (app) => {
 
     validateToken(req, res, next);
   });
+
+  app.use(errorHandler);
 };
 
 export default applyMiddleware;

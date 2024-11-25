@@ -1,13 +1,10 @@
 import express from "express";
 import { PORT } from "./secrets.js";
-import rootRouter from "./routes/index.js";
 import { PrismaClient } from "@prisma/client";
 import applyMiddleware from "./middlewares/index.js";
 
 const app = express();
 applyMiddleware(app);
-
-app.use("/api/v1", rootRouter);
 
 app.use("/", (req, res) => {
   res.send("Hello From Temp File Upload");
