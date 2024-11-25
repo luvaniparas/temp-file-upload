@@ -6,9 +6,9 @@ import applyMiddleware from "./middlewares/index.js";
 const app = express();
 applyMiddleware(app);
 
-app.use("/", (req, res) => {
-  res.send("Hello From Temp File Upload");
-});
+// app.use("/", (req, res) => {
+//   res.send("Hello From Temp File Upload");
+// });
 
 export const prisma = new PrismaClient({
   log: ["query", "info", "warn", "error"],

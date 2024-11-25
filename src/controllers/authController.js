@@ -34,10 +34,33 @@ class AuthController {
     }
   }
 
-  async login(req, res) {
+  async login(req, res, next) {
+    const { logger } = req;
+
+    logger.info(
+      "[AuthController] :: login :: Received login request:",
+      req.body
+    );
+
+    const { email } = req.body;
+
     try {
-      res.send("login");
-    } catch (error) {}
+      const { token, options } = await authService.login(req.body);
+
+      logger.info("[AuthController] :: login :: Login successful:", email);
+
+      return res
+        .status(StatusCodes.OK)
+        .cookie("token", token, options)
+        .json({ message: "Login successful", token: token });
+    } catch (err) {
+      logger.error(
+        "[AuthController] :: login :: Error during user creation:",
+        err
+      );
+
+      next(err);
+    }
   }
 }
 

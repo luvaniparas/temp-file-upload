@@ -26,7 +26,6 @@ const applyMiddleware = (app) => {
 
     // Remove the /api/v1/auth prefix from req.path
     const modifiedPath = req.path.replace(/^\/api\/v1\/auth/, "");
-    console.log("🚀 ~ app.use ~ modifiedPath:", modifiedPath);
 
     if (authPaths.includes(modifiedPath)) {
       return next();
