@@ -1,15 +1,7 @@
-import express from "express";
+import dotenv from "dotenv";
 
-const PORT = 3000;
-const app = express();
+dotenv.config({ path: ".env" });
 
-app.use(express.json());
-
-app.use("/", (req, res) => {
-  res.send("Hello From Temp File Upload");
-});
-
-app.listen(PORT, () => {
-  console.log("Temp File Upload App Working");
-  console.log(`Express app is running at http://localhost:${PORT}`);
-});
+export const JWT_SECRET = process.env.JWT_SECRET;
+export const PORT = process.env.PORT;
+export const DATABASE_URL = process.env.DATABASE_URL;
