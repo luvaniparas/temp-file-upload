@@ -13,6 +13,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Status {
+  active
+  expired
+}
+
 model User {
   id        String   @id @default(uuid()) @map("id")
   name      String   @map("name")
@@ -21,5 +26,28 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  filesCreated File[] @relation("FilesCreated")
+  filesUpdated File[] @relation("FilesUpdated")
+
   @@map("users")
+}
+
+model File {
+  id             String   @id @default(uuid()) @map("id")
+  name           String   @map("name")
+  size           Int      @map("size")
+  type           String   @map("type")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+  status         Status   @default(active) @map("status")
+  expirationTime Int      @map("expiration_time")
+  expiresAt      DateTime @map("expires_at")
+
+  createdBy User @relation("FilesCreated", fields: [createdById], references: [id])
+  updatedBy User @relation("FilesUpdated", fields: [updatedById], references: [id])
+
+  createdById String @map("created_by")
+  updatedById String @map("updated_by")
+
+  @@map("files")
 }
