@@ -42,6 +42,12 @@ export const getObjectURL = async (key, expirationTimeInSeconds) => {
   return url;
 };
 
+/**
+ * Generates a presigned URL for uploading an object to the AWS S3 bucket.
+ *
+ * @param {Object} data An object containing the file name and content type.
+ * @returns {Promise<string>} A presigned URL for uploading the object.
+ */
 export const getPresignedUrl = async (data) => {
   const { fileName, contentType } = data;
 
@@ -55,6 +61,12 @@ export const getPresignedUrl = async (data) => {
   return url;
 };
 
+/**
+ * Deletes an object from the AWS S3 bucket.
+ *
+ * @param {string} key The key of the object to delete.
+ * @returns {Promise<Object>} The response from the S3 client.
+ */
 export const deleteObject = async (key) => {
   const command = new DeleteObjectCommand({
     Bucket: AWS_SECRET_BUCKET_NAME,
