@@ -11,7 +11,7 @@ applyMiddleware(app);
 // });
 
 export const prisma = new PrismaClient({
-  log: ["query", "info", "warn", "error"],
+  log: ["query"], //, "info", "warn", "error"
 });
 
 app.listen(PORT, () => {

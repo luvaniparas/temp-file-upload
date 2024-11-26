@@ -17,8 +17,6 @@ const applyMiddleware = (app) => {
     next();
   });
 
-  app.use("/api/v1", rootRouter);
-
   // Apply token validation middleware to all routes except authentication
   app.use((req, res, next) => {
     // Add your authentication paths here
@@ -33,6 +31,8 @@ const applyMiddleware = (app) => {
 
     validateToken(req, res, next);
   });
+
+  app.use("/api/v1", rootRouter);
 
   app.use(errorHandler);
 };
