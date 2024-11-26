@@ -280,10 +280,4 @@ curl -X DELETE http://localhost:3000/api/v1/resources/your-resource-id
 
 ---
 
-## License
-
-MIT License. See [LICENSE](LICENSE) for more details.
-
----
-
 This `README.md` file provides clear instructions for setting up the module, using the API, and understanding the system’s behavior. You can further customize it as needed based on your exact implementation.
