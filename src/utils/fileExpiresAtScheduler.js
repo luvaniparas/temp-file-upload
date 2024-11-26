@@ -3,10 +3,15 @@ import { prisma } from "../index.js";
 import dayjs from "dayjs"; // For comparing dates (optional but useful)
 
 // Cron job to check and update expired files every hour
-export const fileExpiresAtScheduler = () => {
-  cron.schedule("0 * * * *", async () => {
+export const fileExpiresAtScheduler = (logger) => {
+  // */5 * * * * * for every 5 seconds
+  // */5 * * * * for every 5 minutes
+  // 0 * * * * for every hour
+
+  // executes after every 1 minutes
+  cron.schedule("*/1 * * * * ", async () => {
     try {
-      console.log("[Cron Job] Checking for expired files...");
+      logger.info("[Cron Job] Checking for expired files...");
 
       // Get all files where expiresAt is before the current time and status is not already expired
       const expiredFiles = await prisma.file.findMany({
@@ -32,12 +37,12 @@ export const fileExpiresAtScheduler = () => {
         // Execute all update promises
         await Promise.all(updatePromises);
 
-        console.log(
+        logger.info(
           `[Cron Job] Marked ${expiredFiles.length} file(s) as expired.`
         );
       }
     } catch (error) {
-      console.error("[Cron Job] Error during file expiration check:", error);
+      logger.error("[Cron Job] Error during file expiration check:", error);
     }
   });
 };
