@@ -2,16 +2,24 @@ import { Router } from "express";
 import fileController from "../controllers/fileController.js";
 import validateSchema from "../middlewares/validateSchema.js";
 import { createFileSchema } from "../schema/files.js";
+import { idSchema } from "../schema/commonSchemas.js";
 
-// const { createResource, getResource, getResourceById, deleteResourceById } =
-//   fileController;
-const { createResource } = fileController;
+const { createResource, getResources, getResourceById, deleteResourceById } =
+  fileController;
 
 const fileRouter = Router();
 
 fileRouter.post("/resources", validateSchema(createFileSchema), createResource);
-// fileRouter.get("/resources", validateSchema(), getResource);
-// fileRouter.get("/resources/:id", validateSchema(), getResourceById);
-// fileRouter.delete("/resources/:id", validateSchema(), deleteResourceById);
+fileRouter.get("/resources", getResources);
+fileRouter.get(
+  "/resources/:id",
+  validateSchema(idSchema, true),
+  getResourceById
+);
+fileRouter.delete(
+  "/resources/:id",
+  validateSchema(idSchema, true),
+  deleteResourceById
+);
 
 export default fileRouter;
