@@ -9,7 +9,7 @@ import {
   AWS_SECRET_BUCKET_NAME,
   AWS_ACCESS_KEY_ID,
   AWS_SECRET_ACCESS_KEY,
-} from "../secret";
+} from "../../src/secrets.js";
 
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
@@ -20,6 +20,14 @@ const s3Client = new S3Client({
     secretAccessKey: AWS_SECRET_ACCESS_KEY,
   },
 });
+
+/**
+ * Generates a signed URL for retrieving an object from the AWS S3 bucket.
+ *
+ * @param {string} key The key of the object in the bucket.
+ * @param {number} expirationTimeInSeconds The number of seconds before the URL expires.
+ * @returns {Promise<string>} A signed URL for retrieving the object.
+ */
 export const getObjectURL = async (key, expirationTimeInSeconds) => {
   const command = new GetObjectCommand({
     Bucket: AWS_SECRET_BUCKET_NAME,
@@ -35,11 +43,11 @@ export const getObjectURL = async (key, expirationTimeInSeconds) => {
 };
 
 export const getPresignedUrl = async (data) => {
-  const { clientName, fileName, contentType } = data;
+  const { fileName, contentType } = data;
 
   const command = new PutObjectCommand({
     Bucket: AWS_SECRET_BUCKET_NAME,
-    Key: `/${clientName}/${fileName}`,
+    Key: `/${fileName}`,
     ContentType: contentType,
   });
 
