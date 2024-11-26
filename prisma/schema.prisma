@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Status {
+  active
+  expired
+}
+
+model User {
+  id        String   @id @default(uuid()) @map("id")
+  name      String   @map("name")
+  email     String   @unique @map("email")
+  password  String   @map("password")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  resources   Resource[]   @relation("UserResources")
+  sharedLinks SharedLink[] @relation("UserSharedLinks")
+
+  @@map("users")
+}
+
+model Resource {
+  id         String   @id @default(uuid()) @map("id")
+  name       String   @map("name")
+  url        String   @map("url")
+  type       String   @map("type")
+  size       Int      @map("size")
+  expiration Int      @map("expiration")
+  status     Status   @default(active) @map("status")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  createdById String       @map("created_by_id")
+  createdBy   User         @relation("UserResources", fields: [createdById], references: [id])
+  sharedLinks SharedLink[] @relation("ResourceSharedLinks")
+
+  @@index([status])
+  @@map("resources")
+}
+
+model SharedLink {
+  id         String   @id @default(uuid()) @map("id")
+  resourceId String   @map("resource_id")
+  resource   Resource @relation("ResourceSharedLinks", fields: [resourceId], references: [id])
+  sharedById String   @map("shared_by_id")
+  sharedBy   User     @relation("UserSharedLinks", fields: [sharedById], references: [id])
+  expiresAt  DateTime @map("expires_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("shared_links")
+}
