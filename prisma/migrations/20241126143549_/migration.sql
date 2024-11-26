@@ -17,11 +17,13 @@ CREATE TABLE "users" (
 CREATE TABLE "resources" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "url" TEXT NOT NULL,
     "type" TEXT NOT NULL,
     "size" INTEGER NOT NULL,
-    "created_by_id" TEXT NOT NULL,
-    "expiration" TIMESTAMP(3) NOT NULL,
+    "expiration" INTEGER NOT NULL,
     "status" "Status" NOT NULL DEFAULT 'active',
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "created_by_id" TEXT NOT NULL,
 
     CONSTRAINT "resources_pkey" PRIMARY KEY ("id")
 );
