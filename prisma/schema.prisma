@@ -33,15 +33,18 @@ model User {
 }
 
 model Resource {
-  id          String       @id @default(uuid()) @map("id")
-  name        String       @map("name")
-  type        String       @map("type")
-  size        Int          @map("size")
+  id         String   @id @default(uuid()) @map("id")
+  name       String   @map("name")
+  url        String   @map("url")
+  type       String   @map("type")
+  size       Int      @map("size")
+  expiration Int      @map("expiration")
+  status     Status   @default(active) @map("status")
+  createdAt  DateTime @default(now()) @map("created_at")
+
   createdById String       @map("created_by_id")
   createdBy   User         @relation("UserResources", fields: [createdById], references: [id])
   sharedLinks SharedLink[] @relation("ResourceSharedLinks")
-  expiration  DateTime     @map("expiration")
-  status      Status       @default(active) @map("status")
 
   @@index([status])
   @@map("resources")
