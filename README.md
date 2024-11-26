@@ -280,16 +280,6 @@ curl -X DELETE http://localhost:3000/api/v1/resources/your-resource-id
 
 ---
 
-## Evaluation Criteria
-
-1. **API Design**: RESTful, clean, and secure.
-2. **Data Handling**: Efficient handling of expiration and access control.
-3. **Scalability**: Proper use of scheduling/queue systems for high performance.
-4. **Security**: Secure resource sharing via tokens and access control.
-5. **Documentation**: Clear instructions, API usage, and example requests.
-
----
-
 ## License
 
 MIT License. See [LICENSE](LICENSE) for more details.
