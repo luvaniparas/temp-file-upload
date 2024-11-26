@@ -2,19 +2,18 @@ import express from "express";
 import { PORT } from "./secrets.js";
 import { PrismaClient } from "@prisma/client";
 import applyMiddleware from "./middlewares/index.js";
+import { fileExpiresAtScheduler } from "./utils/fileExpiresAtScheduler.js";
 
 const app = express();
 applyMiddleware(app);
 
-// app.use("/", (req, res) => {
-//   res.send("Hello From Temp File Upload");
-// });
-
 export const prisma = new PrismaClient({
-  log: ["query"], //, "info", "warn", "error"
+  log: ["query"],
 });
 
 app.listen(PORT, () => {
   console.log("Temp File Upload App Working");
   console.log(`Express app is running at http://localhost:${PORT}`);
+
+  fileExpiresAtScheduler();
 });
