@@ -20,7 +20,7 @@ const applyMiddleware = (app) => {
   // Apply token validation middleware to all routes except authentication
   app.use((req, res, next) => {
     // Add your authentication paths here
-    const authPaths = ["/", "/login", "/sing-up"];
+    const authPaths = ["/", "/login", "/sing-up", "/logout"];
 
     // Remove the /api/v1/auth prefix from req.path
     const modifiedPath = req.path.replace(/^\/api\/v1\/auth/, "");

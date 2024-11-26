@@ -62,6 +62,29 @@ class AuthController {
       next(err);
     }
   }
+
+  async logout(req, res, next) {
+    const { logger } = req;
+
+    logger.info("[AuthController] :: logout :: Received logout request");
+
+    try {
+      // Clear the JWT token cookie
+      res
+        .status(StatusCodes.OK)
+        .cookie("token", "", {
+          httpOnly: true,
+          expires: new Date(0),
+          sameSite: "strict",
+        })
+        .json({ message: "Logout successful" });
+
+      logger.info("[AuthController] :: logout :: User logged out successfully");
+    } catch (err) {
+      logger.error("[AuthController] :: logout :: Error during logout", err);
+      next(err);
+    }
+  }
 }
 
 export default new AuthController();
