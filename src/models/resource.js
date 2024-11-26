@@ -23,10 +23,11 @@ export const getResourceById = async (id) => {
   });
 };
 
-export const deleteResourceById = async (id) => {
+export const deleteResourceById = async (id, userId) => {
   return await prisma.resource.delete({
     where: {
       id,
+      createdById: userId,
     },
   });
 };

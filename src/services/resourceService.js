@@ -5,7 +5,10 @@ import {
   getResourceById,
   deleteResourceById,
 } from "../models/resource.js";
-import { createLink } from "../models/shareLink.js";
+import {
+  createLink,
+  deleteShareLinksByResourceId,
+} from "../models/shareLink.js";
 
 class ResourceService {
   /**
@@ -62,11 +65,7 @@ class ResourceService {
     // Fetch the resource by its ID
     const resource = await getResourceById(id);
 
-    // Generate a signed URL for the resource
-    const url = await getObjectURL(resource?.name, resource?.expirationTime);
-
-    // Return the resource and its signed URL
-    return { url, resource };
+    return resource;
   }
 
   /**
@@ -74,17 +73,13 @@ class ResourceService {
    * @param {string} id - the ID of the resource to delete
    * @returns {Promise<Object>} - the deleted resource
    */
-  async deleteResourceById(id) {
-    const resource = await getResourceById(id);
-    if (!resource) return null;
+  async deleteResourceById(id, userId) {
+    const deletedShareLinks = await deleteShareLinksByResourceId(id, userId);
 
-    // Delete the resource from the database
-    await deleteResourceById(id);
-
-    // Delete the file from S3
-    await deleteObject(resource?.name);
-
-    return resource;
+    if (deletedShareLinks) {
+      // Delete the resource from the database
+      await deleteResourceById(id, userId);
+    }
   }
 }
 

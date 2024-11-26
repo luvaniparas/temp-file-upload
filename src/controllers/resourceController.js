@@ -68,7 +68,10 @@ class ResourceController {
     );
 
     try {
-      const response = await resourceService.getResourceById(resourceId);
+      const response = await resourceService.getResourceById(
+        resourceId,
+        userId
+      );
 
       return res.status(StatusCodes.OK).json(response);
     } catch (err) {
